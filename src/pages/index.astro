@@ -1,0 +1,62 @@
+---
+import App from "$layouts/App.astro";
+import { Icon } from "astro-icon/components";
+import LogoFlow from "$components/LogoFlow.astro";
+import Projects from "$components/Projects.astro";
+
+const logos = [
+	{ name: "Svelte", logo: "svelte" },
+	{ name: "Astro", logo: "astro" },
+	{ name: "UnoCSS", logo: "unocss" },
+	{ name: "Less", logo: "less" },
+	{ name: "Node.js", logo: "nodedotjs" },
+	{ name: "TypeScript", logo: "typescript" },
+	{ name: "Rust", logo: "rust" },
+	{ name: "Docker", logo: "docker" },
+	{ name: "Nginx", logo: "nginx" },
+	{ name: "PostgreSQL", logo: "postgresql" },
+	{ name: "MongoDB", logo: "mongodb" },
+	{ name: "Cloudflare", logo: "cloudflare" },
+	{ name: "Git", logo: "git" },
+	{ name: "Arch Linux", logo: "archlinux" },
+	{ name: "Neovim", logo: "neovim" },
+	{ name: "Zsh", logo: "zsh" }
+];
+
+const projects = [
+	{
+		name: "ThoughtLite",
+		description: "A modern Astro theme, focused on content creation.",
+		link: "https://github.com/tuyuritio/astro-theme-thought-lite",
+		tags: ["Astro", "Svelte"]
+	}
+];
+---
+
+<App title="Tuyuri Tio">
+	<div class="flex flex-col gap-20">
+		<div class="flex items-center gap-20 max-sm:flex-wrap">
+			<div class="flex mx-a flex-col gap-5">
+				<figure class="w-50 h-50 rd-1/2 overflow-hidden">
+					<img src="https://avatars.githubusercontent.com/u/46957197?v=4" alt="Avatar" draggable="false" class="inline-block w-full h-full object-cover object-c" />
+				</figure>
+				<span class="self-center font-bold text-xl font-serif tracking-widest"><ruby>五月七日<rt>つゆり</rt></ruby> <ruby>千緒<rt>ちお</rt></ruby></span>
+				<div class="flex justify-around text-size-2xl">
+					<a href="https://github.com/tuyuritio" target="_blank"><Icon name="lucide:github" /></a>
+					<a href="https://ttio.cc" target="_blank"><Icon name="lucide:notebook-text" /></a>
+					<a href="mailto:hi@ttio.cc" target="_blank"><Icon name="lucide:at-sign" /></a>
+				</div>
+			</div>
+			<article class="flex flex-col gap-4 select-text">
+				<p>Hey! I'm Tuyuri Tio.</p>
+				<p>The name is pieced together from anime I've watched, yet it perfectly captures what I want to express.</p>
+				<p>It’s hard to say that programming is my hobby, but I really enjoy the process of creating and solving things with code.</p>
+				<small>Oh, and those scrolling icons below are just there for looks - they’re not really related to me.</small>
+			</article>
+		</div>
+
+		<LogoFlow items={logos} />
+
+		<Projects projects={projects} />
+	</div>
+</App>

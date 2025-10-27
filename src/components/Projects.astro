@@ -1,0 +1,26 @@
+---
+interface Props {
+	projects: { name: string; description: string; link: string; tags?: string[] }[];
+}
+
+const { projects = [] } = Astro.props;
+---
+
+<div class="flex flex-col gap-4">
+	<h4 class="text-xl font-bold">Projects</h4>
+	<div class="grid gap-6 grid-cols-1 sm:grid-cols-2">
+		{
+			projects.map(project => (
+				<a href={project.link} target="_blank" class="flex flex-col gap-1 b-l-2 b-l-solid b-weak pl-4 pb-4">
+					<h5 class="font-medium">{project.name}</h5>
+					<p class="c-secondary text-sm">{project.description}</p>
+					<section class="flex gap-2 mt-1 text-xs">
+						{project.tags?.map(tag => (
+							<span class="rd py-1 px-1.5 bg-weak">{tag}</span>
+						))}
+					</section>
+				</a>
+			))
+		}
+	</div>
+</div>

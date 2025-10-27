@@ -1,0 +1,41 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	items: { name: string; logo: string }[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+<style is:global>
+	@keyframes marquee {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	.animate-marquee {
+		animation: marquee var(--marquee-duration) linear infinite;
+	}
+
+	.mask {
+		mask-image: linear-gradient(to right, transparent, black 5rem, black calc(100% - 5rem), transparent);
+	}
+</style>
+
+<div class="relative overflow-x-clip mask">
+	<div style={`--marquee-duration: ${items.length * 3}s;`} class="flex gap-20 pl-20 w-max animate-marquee">
+		{
+			items.concat(items).map(tech => (
+				<div class="flex items-center gap-3">
+					<Icon name={`simple-icons:${tech.logo}`} width={30} height={30} />
+					<span class="text-lg">{tech.name}</span>
+				</div>
+			))
+		}
+	</div>
+</div>

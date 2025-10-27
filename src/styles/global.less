@@ -1,0 +1,45 @@
+.light-theme() {
+	--primary-color: #0e0e0e;
+	--secondary-color: #50504d;
+	--background-color: #fffffd;
+	--weak-color: #9f9f9c;
+	--selection-color: #adadacc3;
+}
+
+.dark-theme() {
+	--primary-color: #dddddb;
+	--secondary-color: #aaaaa8;
+	--background-color: #0e0e0c;
+	--weak-color: #5d5d5a;
+	--selection-color: #adadacc3;
+}
+
+:root {
+	.light-theme();
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		.dark-theme();
+	}
+}
+
+html {
+	font-family: "Inter", sans-serif;
+	color: var(--primary-color);
+	background-color: var(--background-color);
+
+	user-select: none;
+
+	::selection {
+		background-color: var(--selection-color);
+	}
+}
+
+body {
+	margin: 5%;
+
+	@media (min-width: 768px) {
+		margin: 5% 25%;
+	}
+}
