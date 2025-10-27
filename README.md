@@ -1,3 +1,3 @@
 # Personal Page
 
-Built with [Astro](https://astro.build/). : )
+Built with [Astro](https://astro.build/) : )
