@@ -9,10 +9,16 @@
   },
   "dependencies": {
     "@astrojs/svelte": "^7.2.0",
+    "@extractus/feed-extractor": "^7.1.7",
+    "@iconify-json/devicon": "^1.2.47",
+    "@iconify-json/icon-park-outline": "^1.2.4",
+    "@iconify-json/logos": "^1.2.10",
     "@iconify-json/lucide": "^1.2.71",
     "@iconify-json/simple-icons": "^1.2.55",
+    "@iconify/iconify": "^3.1.1",
     "astro": "^5.15.1",
     "astro-icon": "^1.1.5",
+    "iconify-icon": "^3.0.2",
     "svelte": "^5.42.2",
     "typescript": "^5.9.3"
   },

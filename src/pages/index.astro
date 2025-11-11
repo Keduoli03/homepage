@@ -3,24 +3,21 @@ import App from "$layouts/App.astro";
 import { Icon } from "astro-icon/components";
 import LogoFlow from "$components/LogoFlow.astro";
 import Projects from "$components/Projects.astro";
+import Timeline from "$components/Timeline.astro";
+import RecentPosts from "$components/RecentPosts.astro";
 
 const logos = [
-	{ name: "Svelte", logo: "svelte" },
-	{ name: "Astro", logo: "astro" },
-	{ name: "UnoCSS", logo: "unocss" },
-	{ name: "Less", logo: "less" },
-	{ name: "Node.js", logo: "nodedotjs" },
-	{ name: "TypeScript", logo: "typescript" },
-	{ name: "Rust", logo: "rust" },
-	{ name: "Docker", logo: "docker" },
-	{ name: "Nginx", logo: "nginx" },
-	{ name: "PostgreSQL", logo: "postgresql" },
-	{ name: "MongoDB", logo: "mongodb" },
-	{ name: "Cloudflare", logo: "cloudflare" },
-	{ name: "Git", logo: "git" },
-	{ name: "Arch Linux", logo: "archlinux" },
-	{ name: "Neovim", logo: "neovim" },
-	{ name: "Zsh", logo: "zsh" }
+	{ name: "Java", logo: "devicon:java" },
+	{ name: "Astro", logo: "devicon:astro" },
+	{ name: "Vue", logo: "devicon:vuejs" },
+	{ name: "Node.js", logo: "logos:nodejs-icon" },
+	{ name: "Python", logo: "devicon:python" },
+	{ name: "TypeScript", logo: "devicon:typescript" },
+	{ name: "Nginx", logo: "logos:nginx" },
+	{ name: "MySQL", logo: "devicon:mysql" },
+	{ name: "Vercel", logo: "devicon:vercel" },
+	{ name: "Git", logo: "devicon:git" },
+	{ name: "Arch Linux", logo: "devicon:archlinux" },
 ];
 
 const projects = [
@@ -31,32 +28,55 @@ const projects = [
 		tags: ["Astro", "Svelte"]
 	}
 ];
+
+const timeline = [
+	{ date: "2022-09", title: "升入大学", description: "正式开始接触编程" },
+	{ date: "2024-05", title: "搭建个人博客", description: "初次体验写博客的感觉。", link: "https://blog.blueke.top" },
+	{ date: "2025-01", title: "探索Astro", description: "学习 Astro 框架，搭建个人博客。"},
+	{ date: "2022-09", title: "升入大学", description: "正式开始接触编程" },
+	{ date: "2024-05", title: "搭建个人博客", description: "初次体验写博客的感觉。", link: "https://blog.blueke.top" },
+	{ date: "2025-01", title: "探索Astro", description: "学习 Astro 框架，搭建个人博客。"}
+];
 ---
 
 <App title="TuyuriTio">
 	<div class="flex flex-col gap-20">
-		<div class="flex items-center gap-20 max-xl:flex-wrap">
-			<div class="flex mx-a flex-col gap-5">
-				<figure class="w-50 h-50 rd-1/2 overflow-hidden">
-					<img src="https://avatars.githubusercontent.com/u/46957197?v=4" alt="Avatar" draggable="false" class="inline-block w-full h-full object-cover object-c" />
-				</figure>
-				<span class="self-center font-bold text-xl font-serif tracking-widest"><ruby>五月七日<rt>つゆり</rt></ruby> <ruby>千緒<rt>ちお</rt></ruby></span>
-				<div class="flex justify-around text-size-2xl">
+		<div class="relative flex items-center gap-8 max-xl:flex-wrap  mt-20">
+			<div>
+				<article class="flex flex-col gap-4 select-text mt-4 xl:pr-64">
+					<p class="text-3xl lg:text-4xl">Hi, I'm <span class="font-semibold">Lanke</span>！</p>
+					<p class="text-1xl lg:text-2xl">一个正在互联网上探索的人。</p>
+				</article>
+				<div class="mt-28 flex items-center gap-6 w-fit text-size-2xl">
 					<a href="https://github.com/tuyuritio" target="_blank"><Icon name="lucide:github" /></a>
 					<a href="https://ttio.cc" target="_blank"><Icon name="lucide:notebook-text" /></a>
 					<a href="mailto:hi@ttio.cc" target="_blank"><Icon name="lucide:at-sign" /></a>
 				</div>
 			</div>
-			<article class="flex flex-col gap-4 select-text">
-				<p>Hi, I'm TuyuriTio!</p>
-				<p>The name is pieced together from anime I've watched, yet it perfectly captures what I want to express.</p>
-				<p>It’s hard to say that programming is my hobby, but I really enjoy the process of creating and solving things with code.</p>
-				<small>Oh, and those scrolling icons below are just there for looks - they’re not really related to me.</small>
-			</article>
+			
+			
+			<div class="flex mx-a flex-col gap-5 xl:absolute xl:right-0 xl:top-1/2 xl:-translate-y-1/2 ">
+				<figure class="w-50 h-50 rd-1/2 overflow-hidden">
+					<img src="https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/img/头像.jpg" alt="Avatar" draggable="false" class="inline-block w-full h-full object-cover object-c" />
+				</figure>
+				<span class="self-center font-bold text-xl font-serif tracking-widest">蓝珂</span>
+				
+			</div>
 		</div>
 
-		<LogoFlow items={logos} />
+		<div class="mt-10">
+			<LogoFlow items={logos} />
+		</div>
 
 		<Projects projects={projects} />
+
+		<div class="mt-12 grid w-full grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-10 md:gap-x-12 items-start">
+		  <div class="min-w-0 w-full">
+		    <RecentPosts feedUrl="https://blog.blueke.top/rss.xml" limit={4} />
+		  </div>
+		  <div class="min-w-0 w-full">
+		    <Timeline items={timeline} />
+		  </div>
+		</div>
 	</div>
 </App>

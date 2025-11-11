@@ -1,0 +1,21 @@
+---
+interface TimelineItem {
+    date?: string;
+    period?: string;
+    title: string;
+    subtitle?: string;
+    description?: string;
+    points?: string[];
+    icon?: string;
+    link?: string;
+}
+const { items = [] } = Astro.props as { items: TimelineItem[] };
+import TimelineList from "./TimelineList.astro";
+---
+<div class="flex flex-col gap-4">
+    <h4 class="text-xl font-bold mb-2">我的历程</h4>
+
+<TimelineList items={items} scrollable={true} maxHeight="22.1rem" />
+</div>
+
+

@@ -1,0 +1,248 @@
+---
+interface TimelineEntry {
+  date?: string | null;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  points?: string[];
+  link?: string;
+}
+interface Props {
+  items: TimelineEntry[];
+  titleClickable?: boolean;
+  scrollable?: boolean;
+  maxHeight?: string;
+}
+const {
+  items = [],
+  titleClickable = false,
+  scrollable = false,
+  maxHeight = "24rem"
+} = Astro.props as Props;
+---
+
+<div class="timeline-scroll" style={scrollable ? `max-height: ${maxHeight}; overflow-y: auto; overflow-x: hidden; padding-right: 0.5rem;` : undefined}>
+  <ul class="timeline">
+    {
+      items.map((item: TimelineEntry) => (
+        <li class="timeline-event">
+          <label class="timeline-dot"></label>
+          <div class="timeline-event-copy">
+            <div style="display: flex; align-items: baseline; gap: 0.6em; margin: 0 0 0.6em;">
+              <p class="timeline-date" style="margin: 0;">{item.date ?? ""}</p>
+              {
+                titleClickable && item.link ? (
+                  <a href={item.link} target="_blank" rel="noopener" class="timeline-title no-underline hover:underline" style="margin: 0;">
+                    {item.title}
+                  </a>
+                ) : (
+                  <div class="timeline-title" style="margin: 0;">{item.title}</div>
+                )
+              }
+            </div>
+            {item.description && (<p>{item.description}</p>)}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+:root {
+  --color-1: #000;
+  --color-2: #fff;
+  --color-3: rgb(168, 50, 121);
+  --rail-width: 2px;
+}
+/* 时间线容器（贴齐左侧） */
+.timeline {
+  margin: 0;
+  position: relative;
+  max-width: none;
+  list-style: none;
+  padding: 0;
+  padding-left: 0.4rem;   /* 与竖线 left 同步 */
+  padding-top: 0.3em;     /* 新增：为首条提供统一缓冲，避免负位移顶住 */
+  overflow-x: hidden;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0.4rem;
+  width: var(--rail-width);
+  height: 100%;
+  background-color: var(--color-1);
+  margin-left: 0;
+}
+
+/* 事件项 */
+.timeline-event {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+.timeline-event:hover .timeline-dot {
+  transform: rotate(-45deg);
+  background-color: var(--color-3);
+}
+.timeline-event:hover .timeline-date {
+  box-shadow: inset 40em 0 0 0 var(--color-3);
+}
+
+/* 节点：旋转方块 */
+.timeline-dot {
+  transition: transform 0.2s ease-in;
+  transform: rotate(45deg);
+  background-color: var(--color-1);
+  outline: 7px solid var(--color-2);
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;               /* 依赖父级 .timeline-event 的左边缘 */
+  width: 0.8em;
+  height: 0.8em;
+  margin: 0rem 0.4em 0.4em -0.3rem; 
+}
+
+/* 右侧内容块：减小内边距，整体更紧凑 */
+.timeline-event-copy {
+  position: relative;
+  top: -0.9rem;
+  left: 1.0rem;
+  width: auto;
+  padding: 0.4em 0.8em 0.6em 0.4em;
+}
+
+/* 标题行 */
+.timeline-title {
+  font-weight: 700;
+  font-size: 1.06em;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 描述段落*/
+.timeline-event-copy p:not(.timeline-date) {
+  margin: 0;
+  padding-bottom: 0.5em;  
+  line-height: 1.6;
+  font-size: 0.9em;
+}
+
+.timeline-event:last-child .timeline-event-copy p:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.timeline-event-copy p:not(.timeline-date) {
+  padding-bottom: 1em;
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95em;
+}
+
+/* 日期标签 */
+.timeline-date {
+  display: inline-block;
+  color: var(--color-2);
+  background-color: var(--color-1);
+  font-size: 0.7em;
+  padding: 0.2em 0.8em 0.18em 0.8em;
+  margin-bottom: 1em;
+  box-shadow: inset 0 0 0 0 var(--color-3);
+  transition: box-shadow 0.5s ease-in 0.1s;
+}
+
+
+/* 链接下划线仅悬停显示 */
+.timeline-event-copy a {
+  text-decoration: none;
+  color: inherit;
+}
+.timeline-event-copy a:hover {
+  text-decoration: underline;
+}
+
+/* 标题样式*/
+.timeline-title {
+  font-weight: 700;
+  font-size: 1.06em;  
+  line-height: 1.5;
+  margin: 0;
+}
+.timeline-event-copy p:not(.timeline-event-thumbnail):not(.timeline-date),
+.timeline-item p:not(.timeline-event-thumbnail):not(.timeline-date) {
+  padding-bottom: 1em;
+  margin: 0;
+  line-height: 1.6;    
+  font-size: 0.9em;     
+}
+/* 滚动条样式：轨道透明，仅显示拇指；兼容 Firefox 与 WebKit */
+.timeline-scroll,
+.timeline {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary-color) transparent; /* Firefox：拇指颜色 + 轨道透明 */
+  scrollbar-gutter: stable; /* 避免布局抖动 */
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* IE/Edge 基础样式 */
+}
+
+/* WebKit 内核（Chrome/Safari）滚动条基础设置 */
+.timeline-scroll::-webkit-scrollbar,
+.timeline::-webkit-scrollbar {
+  width: 8px; /* 垂直滚动条宽度 */
+  height: 8px; /* 水平滚动条高度 */
+}
+
+/* 强制隐藏所有滚动条按钮（核心修复） */
+.timeline-scroll::-webkit-scrollbar-button,
+.timeline::-webkit-scrollbar-button,
+/* 针对垂直滚动条的上下箭头 */
+.timeline-scroll::-webkit-scrollbar-button:vertical,
+.timeline::-webkit-scrollbar-button:vertical,
+.timeline-scroll::-webkit-scrollbar-button:vertical:start,
+.timeline::-webkit-scrollbar-button:vertical:start,
+.timeline-scroll::-webkit-scrollbar-button:vertical:end,
+.timeline::-webkit-scrollbar-button:vertical:end,
+/* 针对水平滚动条的左右箭头 */
+.timeline-scroll::-webkit-scrollbar-button:horizontal,
+.timeline::-webkit-scrollbar-button:horizontal,
+.timeline-scroll::-webkit-scrollbar-button:horizontal:start,
+.timeline::-webkit-scrollbar-button:horizontal:start,
+.timeline-scroll::-webkit-scrollbar-button:horizontal:end,
+.timeline::-webkit-scrollbar-button:horizontal:end {
+  display: none !important; /* 强制隐藏 */
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* 轨道透明 */
+.timeline-scroll::-webkit-scrollbar-track,
+.timeline::-webkit-scrollbar-track,
+.timeline-scroll::-webkit-scrollbar-track-piece,
+.timeline::-webkit-scrollbar-track-piece {
+  background: transparent !important;
+}
+
+/* 滚动条拇指（滑块）样式 */
+.timeline-scroll::-webkit-scrollbar-thumb,
+.timeline::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  border: none;
+}
+
+.timeline-scroll::-webkit-scrollbar-thumb:hover,
+.timeline::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-color);
+  opacity: 0.9;
+}
+
+/* 滚动条角落（水平+垂直交汇点）透明 */
+.timeline-scroll::-webkit-scrollbar-corner,
+.timeline::-webkit-scrollbar-corner {
+  background: transparent !important;
+}
+</style>

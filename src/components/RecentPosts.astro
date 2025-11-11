@@ -1,0 +1,79 @@
+---
+import TimelineList from "./TimelineList.astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  feedUrl: string;
+  limit?: number;
+}
+const { feedUrl, limit = 8 } = Astro.props as Props;
+
+type Entry = {
+  title: string;
+  link: string;
+  date: string | null;
+  description?: string;
+  subtitle?: string;
+  points?: string[];
+};
+
+const formatDate = (value: unknown): string | null => {
+  if (value == null) return null;
+  try {
+    const d = new Date(typeof value === "string" || typeof value === "number" ? value : String(value));
+    if (isNaN(d.getTime())) return typeof value === "string" ? value : String(value);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  } catch {
+    return typeof value === "string" ? value : String(value);
+  }
+};
+
+let items: Entry[] = [];
+try {
+  const { extract } = await import("@extractus/feed-extractor");
+  const feed = await extract(feedUrl);
+  const entries: any[] = Array.isArray((feed as any)?.entries) ? (feed as any).entries : [];
+  items = entries.slice(0, limit).map(it => ({
+    title: it?.title ?? it?.title?.value ?? "Untitled",
+    link: it?.link ?? it?.links?.[0]?.href ?? it?.id ?? "#",
+    date: formatDate(it?.published ?? it?.pubDate ?? it?.updated ?? it?.date ?? null),
+    description: it?.description ?? it?.summary ?? (typeof it?.content === "string" ? it.content : "")
+  }));
+} catch (err) {
+  console.error("Failed to fetch RSS:", err);
+}
+
+const blogHome = (() => {
+  try {
+    const u = new URL(feedUrl);
+    return u.origin + "/";
+  } catch {
+    return "#";
+  }
+})();
+
+---
+
+<div class="flex flex-col gap-4">
+  <h4 class="text-xl font-bold mb-2">最近文章</h4>
+
+  {items.length === 0 ? (
+    <p class="text-sm c-secondary">暂时无法获取到文章，请稍后重试。</p>
+  ) : (
+    <TimelineList items={items} titleClickable={true}/>
+  )}
+
+  <div class="text-right pr-2">
+    <a
+  href={blogHome}
+  target="_blank"
+  rel="noopener"
+  class="no-underline inline-flex items-center gap-1 text-sm"
+  style="text-decoration: none !important;"
+><Icon name="icon-park-outline:right-c" width={14} height={14} />阅读更多
+</a>
+  </div>
+</div>
