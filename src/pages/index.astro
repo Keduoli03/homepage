@@ -3,8 +3,10 @@ import App from "$layouts/App.astro";
 import { Icon } from "astro-icon/components";
 import LogoFlow from "$components/LogoFlow.astro";
 import Projects from "$components/Projects.astro";
-import Timeline from "$components/Timeline.astro";
+import LandMark from "$components/LandMark.astro";
 import RecentPosts from "$components/RecentPosts.astro";
+import Footer from "$layouts/Footer.astro";
+const props = Astro.props;
 
 const logos = [
 	{ name: "Java", logo: "devicon:java" },
@@ -22,45 +24,55 @@ const logos = [
 
 const projects = [
 	{
-		name: "ThoughtLite",
-		description: "A modern Astro theme, focused on content creation.",
-		link: "https://github.com/tuyuritio/astro-theme-thought-lite",
-		tags: ["Astro", "Svelte"]
-	}
+		name: "Personal Page",
+		description: "基于友人仓库，二改出的个人主页",
+		link: "https://github.com/Keduoli03/homepage",
+		tags: ["Astro", "Page"]
+	},
+	{
+		name: "Blog",
+		description: "独立开发ing的个人博客",
+		link: "https://github.com/Keduoli03/Lanke",
+		tags: ["Astro", "Blog"]
+	},
+	{
+		name: "ENav",
+		description: "基于Astro和WebStack-hugo开发的导航网站",
+		link: "https://github.com/Keduoli03/ENav",
+		tags: ["Astro", "Nav"]
+	},
+
 ];
 
 const timeline = [
 	{ date: "2022-09", title: "升入大学", description: "正式开始接触编程" },
 	{ date: "2024-05", title: "搭建个人博客", description: "初次体验写博客的感觉。", link: "https://blog.blueke.top" },
 	{ date: "2025-01", title: "探索Astro", description: "学习 Astro 框架，搭建个人博客。"},
-	{ date: "2022-09", title: "升入大学", description: "正式开始接触编程" },
-	{ date: "2024-05", title: "搭建个人博客", description: "初次体验写博客的感觉。", link: "https://blog.blueke.top" },
-	{ date: "2025-01", title: "探索Astro", description: "学习 Astro 框架，搭建个人博客。"}
 ];
 ---
 
-<App title="TuyuriTio">
+
+<App title="Lanke">
 	<div class="flex flex-col gap-20">
-		<div class="relative flex items-center gap-8 max-xl:flex-wrap  mt-20">
-			<div>
-				<article class="flex flex-col gap-4 select-text mt-4 xl:pr-64">
-					<p class="text-3xl lg:text-4xl">Hi, I'm <span class="font-semibold">Lanke</span>！</p>
-					<p class="text-1xl lg:text-2xl">一个正在互联网上探索的人。</p>
+		<div class="relative flex flex-col xl:flex-row items-center xl:items-start gap-8 xl:gap-10 mt-10 xl:mt-20">
+			<div class="w-full">
+				<article class="flex flex-col items-center md:items-start gap-3 select-text mt-2 xl:mt-4 text-center md:text-left xl:pr-72">
+					<p class="text-2xl sm:text-3xl lg:text-4xl">Hi, I'm <span class="font-semibold">Lanke</span>！</p>
+					<p class="text-base sm:text-lg lg:text-2xl">一个正在互联网上探索的人。</p>
 				</article>
-				<div class="mt-28 flex items-center gap-6 w-fit text-size-2xl">
-					<a href="https://github.com/tuyuritio" target="_blank"><Icon name="lucide:github" /></a>
-					<a href="https://ttio.cc" target="_blank"><Icon name="lucide:notebook-text" /></a>
-					<a href="mailto:hi@ttio.cc" target="_blank"><Icon name="lucide:at-sign" /></a>
+				<div class="mt-12 md:mt-16 xl:mt-28 flex items-center gap-6 w-fit text-size-2xl mx-auto md:mx-0">
+					<a href="https://blog.blueke.top" target="_blank"><Icon name="ri:book-line" /></a>
+					<a href="https://github.com/Keduoli03" target="_blank"><Icon name="ri:github-line" /></a>
+					<a href="https://blog.blueke.top" target="_blank"><Icon name="ri:qq-line" class="qq-icon"/></a>
+					<a href="mailto:2801429414@qq.com" target="_blank"><Icon name="ri:at-line" /></a>
 				</div>
 			</div>
-			
-			
-			<div class="flex mx-a flex-col gap-5 xl:absolute xl:right-0 xl:top-1/2 xl:-translate-y-1/2 ">
-				<figure class="w-50 h-50 rd-1/2 overflow-hidden">
+
+			<div class="order-first xl:order-none w-full xl:w-auto flex mx-a flex-col gap-5 items-center xl:absolute xl:right-0 xl:top-1/2 xl:-translate-y-1/2">
+				<figure class="w-28 h-28 sm:w-36 sm:h-36 xl:w-50 xl:h-50 rd-1/2 overflow-hidden">
 					<img src="https://gcore.jsdelivr.net/gh/Keduoli03/My_img@img/img/头像.jpg" alt="Avatar" draggable="false" class="inline-block w-full h-full object-cover object-c" />
 				</figure>
-				<span class="self-center font-bold text-xl font-serif tracking-widest">蓝珂</span>
-				
+				<span class="font-bold text-lg sm:text-xl font-serif tracking-widest">蓝珂</span>
 			</div>
 		</div>
 
@@ -75,8 +87,10 @@ const timeline = [
 		    <RecentPosts feedUrl="https://blog.blueke.top/rss.xml" limit={4} />
 		  </div>
 		  <div class="min-w-0 w-full">
-		    <Timeline items={timeline} />
+		    <LandMark items={timeline} />
 		  </div>
 		</div>
 	</div>
+	<Footer></Footer>
 </App>
+	

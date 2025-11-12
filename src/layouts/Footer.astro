@@ -1,0 +1,102 @@
+---
+import { getEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+
+const START_YEAR = 2025;
+const CURRENT_YEAR = new Date().getFullYear();
+
+let { author = "lanke", copyright = {} } = Astro.props;
+
+const displayYear = START_YEAR === CURRENT_YEAR 
+  ? START_YEAR.toString() 
+  : `${START_YEAR}-${CURRENT_YEAR}`;
+
+const { type: copyrightType = "CC BY-NC-SA 4.0" } = copyright;
+
+let ccURL: string;
+let ccLabel: string;
+
+switch (copyrightType) {
+	case "CC BY 4.0":
+		ccURL = "https://creativecommons.org/licenses/by/4.0/";
+		ccLabel = "Attribution 4.0 International";
+		break;
+	case "CC BY-SA 4.0":
+		ccURL = "https://creativecommons.org/licenses/by-sa/4.0/";
+		ccLabel = "Attribution-ShareAlike 4.0 International";
+		break;
+	case "CC BY-NC 4.0":
+		ccURL = "https://creativecommons.org/licenses/by-nc/4.0/";
+		ccLabel = "Creative Commons Attribution-NonCommercial 4.0 International";
+		break;
+	case "CC BY-NC-SA 4.0":
+		ccURL = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
+		ccLabel = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International";
+		break;
+	case "CC BY-ND 4.0":
+		ccURL = "https://creativecommons.org/licenses/by-nd/4.0/";
+		ccLabel = "Creative Commons Attribution-NoDerivatives 4.0 International";
+		break;
+	case "CC BY-NC-ND 4.0":
+		ccURL = "https://creativecommons.org/licenses/by-nc-nd/4.0/";
+		ccLabel = "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International";
+		break;
+	case "CC0 1.0":
+		ccURL = "https://creativecommons.org/publicdomain/zero/1.0/";
+		ccLabel = "CC0 1.0 Universal";
+		break;
+	default:
+		ccURL = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
+		ccLabel = "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International";
+		break;
+}
+
+const ccIcons = ["ri:creative-commons-line"];
+if (copyrightType !== "CC0 1.0") {
+	if (copyrightType.includes("BY")) ccIcons.push("ri:creative-commons-by-line");
+	if (copyrightType.includes("NC")) ccIcons.push("ri:creative-commons-nc-line");
+	if (copyrightType.includes("SA")) ccIcons.push("ri:creative-commons-sa-line");
+	if (copyrightType.includes("ND")) ccIcons.push("ri:creative-commons-nd-line");
+} else {
+	ccIcons.push("ri:creative-commons-zero-line");
+}
+
+const policy = await getEntry("information", "policy").catch(() => null);
+---
+
+<footer class="flex flex-col sm:flex-row items-center justify-between gap-2 mt-8 mb-5 sm:mb-3 text-size-sm font-mono">
+	<div class="flex items-center gap-1">
+        <Icon name="ri:copyright-line" />
+			<span>{displayYear}</span>
+		{
+			typeof author === "string" ? (
+				<span>{author}</span>
+			) : !author?.link ? (
+				<span>{author?.name || "lanke"}</span>
+			) : (
+				<a href={author.link} target="_blank" rel="noopener noreferrer">
+					{author.name || "lanke"}
+				</a>
+			)
+		}
+		<span>|</span>
+		<a target="_blank" href={ccURL} aria-label={ccLabel} class="flex items-center gap-1">
+			{ccIcons.map((icon) => <Icon name={icon} />)}
+		</a>
+		{
+			policy && [
+				<span>·</span>,
+				<a href="/policy" aria-label="隐私政策" class="inline-flex">
+					<Icon name="lucide:scale" title="隐私政策" />
+				</a>
+			]
+		}
+	</div>
+	<code class="flex items-center gap-2.5">
+		<p>Powered by</p>
+		<a href="https://astro.build/" aria-label="Astro" target="_blank" class="inline-flex"><Icon name="simple-icons:astro" /></a>
+		<span>·</span>
+        <a href="https://github.com/tuyuritio" aria-label="原作者" target="_blank" class="inline-flex"><Icon name="simple-icons:github" title="原作者" /></a>
+        <a href="https://github.com/Keduoli03/homepage" aria-label="仓库" target="_blank" class="inline-flex"><Icon name="simple-icons:github" title="仓库" /></a>
+	</code>
+</footer>

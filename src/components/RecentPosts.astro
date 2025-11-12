@@ -1,5 +1,5 @@
 ---
-import TimelineList from "./TimelineList.astro";
+import Timeline from "./util/Timeline.astro"; 
 import { Icon } from "astro-icon/components";
 
 interface Props {
@@ -63,10 +63,10 @@ const blogHome = (() => {
   {items.length === 0 ? (
     <p class="text-sm c-secondary">暂时无法获取到文章，请稍后重试。</p>
   ) : (
-    <TimelineList items={items} titleClickable={true}/>
+    <Timeline items={items} titleClickable={true}/>
   )}
 
-  <div class="text-right pr-2">
+  <div class="text-right pr-8">
     <a
   href={blogHome}
   target="_blank"

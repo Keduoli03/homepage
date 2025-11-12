@@ -142,7 +142,7 @@ const {
   font-size: 0.95em;
 }
 
-/* 日期标签 */
+/* 日期标签：不换行、不缩小 */
 .timeline-date {
   display: inline-block;
   color: var(--color-2);
@@ -152,24 +152,24 @@ const {
   margin-bottom: 1em;
   box-shadow: inset 0 0 0 0 var(--color-3);
   transition: box-shadow 0.5s ease-in 0.1s;
+
+  white-space: nowrap;   /* 关键：日期不换行 */
+  flex-shrink: 0;        /* 关键：不被挤压缩小 */
+  /* 可选：确保按内容宽度占位
+     min-width: max-content; */
 }
 
-
-/* 链接下划线仅悬停显示 */
-.timeline-event-copy a {
-  text-decoration: none;
-  color: inherit;
-}
-.timeline-event-copy a:hover {
-  text-decoration: underline;
-}
-
-/* 标题样式*/
+/* 标题：占用剩余空间，允许强制换行 */
 .timeline-title {
   font-weight: 700;
   font-size: 1.06em;  
   line-height: 1.5;
   margin: 0;
+
+  flex: 1 1 auto;        /* 占剩余空间 */
+  min-width: 0;          /* 允许在 flex 中缩小并换行 */
+  overflow-wrap: anywhere;
+  word-break: break-word; /* 英文长词也能断行 */
 }
 .timeline-event-copy p:not(.timeline-event-thumbnail):not(.timeline-date),
 .timeline-item p:not(.timeline-event-thumbnail):not(.timeline-date) {
