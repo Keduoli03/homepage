@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+const { year = "03", major = "软件工程", mbti = "INFP-T", location } = Astro.props;
+---
+
+<section class="flex items-center gap-4 flex-wrap">
+  <div class="flex items-center gap-2 px-3 py-1 rd-2 border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5">
+    <Icon name="ri:calendar-line" />
+    <span class="text-sm sm:text-base font-medium">{year}</span>
+  </div>
+  <div class="flex items-center gap-2 px-3 py-1 rd-2 border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5">
+    <Icon name="ri:book-2-line" />
+    <span class="text-sm sm:text-base font-medium">{major}</span>
+  </div>
+  <div class="flex items-center gap-2 px-3 py-1 rd-2 border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5">
+    <Icon name="ri:user-smile-line" />
+    <span class="text-sm sm:text-base font-medium">{mbti}</span>
+  </div>
+  {location && (
+    <div class="flex items-center gap-2 px-3 py-1 rd-2 border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5">
+      <Icon name="ri:map-pin-line" />
+      <span class="text-sm sm:text-base font-medium">{location}</span>
+    </div>
+  )}
+</section>

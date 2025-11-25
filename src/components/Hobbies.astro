@@ -1,0 +1,17 @@
+---
+interface Props { items?: string[] }
+const { items = [] } = Astro.props as Props;
+---
+
+<div class="flex flex-col gap-4">
+  <h4 class="text-xl font-bold">兴趣</h4>
+  {items.length === 0 ? (
+    <p class="text-sm c-secondary">暂无内容</p>
+  ) : (
+    <section class="flex items-center gap-2 flex-wrap">
+      {items.map(h => (
+        <span class="flex items-center gap-2 px-3 py-1 rd-2 border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 text-sm sm:text-base font-medium">{h}</span>
+      ))}
+    </section>
+  )}
+</div>

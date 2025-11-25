@@ -33,9 +33,35 @@ const formatDate = (value: unknown): string | null => {
 
 let items: Entry[] = [];
 try {
-  const { extract } = await import("@extractus/feed-extractor");
-  const feed = await extract(feedUrl);
-  const entries: any[] = Array.isArray((feed as any)?.entries) ? (feed as any).entries : [];
+  const { extract, extractFromXml } = await import("@extractus/feed-extractor");
+  const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
+  const accept = "application/xml,text/xml,application/rss+xml,application/atom+xml,application/json;q=0.9,text/html;q=0.8,*/*;q=0.7";
+  let origin = "";
+  try { const u = new URL(feedUrl); origin = u.origin; } catch {}
+
+  let feed: any = null;
+  try {
+    feed = await extract(feedUrl, {}, { headers: { "user-agent": ua, "accept": accept, "referer": origin, "origin": origin, "accept-language": "zh-CN,zh;q=0.9,en;q=0.8" } });
+  } catch (e1) {
+    console.error("RSS direct fetch failed, retry via proxy:", e1);
+    try {
+      feed = await extract(feedUrl, {}, { proxy: { target: "https://cors.isomorphic-git.org/" } });
+    } catch (e2) {
+      console.error("RSS proxy fetch failed:", e2);
+      try {
+        const resp = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(feedUrl));
+        if (resp.ok) {
+          const xml = await resp.text();
+          feed = extractFromXml(xml);
+        }
+      } catch (e3) {
+        console.error("RSS allorigins fallback failed:", e3);
+        feed = null;
+      }
+    }
+  }
+
+  const entries: any[] = Array.isArray(feed?.entries) ? feed.entries : [];
   items = entries.slice(0, limit).map(it => ({
     title: it?.title ?? it?.title?.value ?? "Untitled",
     link: it?.link ?? it?.links?.[0]?.href ?? it?.id ?? "#",
